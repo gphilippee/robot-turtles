@@ -42,9 +42,6 @@ public class Menu extends JFrame implements ActionListener, MouseListener {
         jouer.addActionListener(this);
         jouer.addMouseListener(this);
 
-        quitter = new JButton("Quitter");
-        quitter.addActionListener(this);
-
         background = new Background();
         background.setLayout(new GridBagLayout());
         this.setContentPane(background);
@@ -69,10 +66,6 @@ public class Menu extends JFrame implements ActionListener, MouseListener {
         gbc.gridheight = 1;
         background.add(jouer, gbc);
 
-        //positionnement quitter
-        gbc.gridy = 4;
-        background.add(quitter, gbc);
-
     }
 
     @Override
@@ -81,12 +74,6 @@ public class Menu extends JFrame implements ActionListener, MouseListener {
 
         if(source == jouer){
             new selectionJoueur(this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2,this);
-        }
-
-        if(source == quitter){
-            setVisible(false);
-            this.dispose();
-            System.exit(0);
         }
     }
 

@@ -22,32 +22,36 @@ public class Fenetre extends JFrame implements ActionListener{
      */
     private GrilleJeu grille;
 
-    //Reference du content panel de la fenetre
+    /**
+     * Reference du content panel de la fenetre
+     */
+
     private JPanel conteneurGeneral;
 
-    //Zone de text pour l'affichage d'informations sur la partie
-    private JTextArea logsPartie;
-
-    //Affichage des coordonnees abscisses du plateau
+    /**
+     * Affichage des coordonnees abscisses du plateau
+     */
     private JPanel coordAbscisse;
 
-    //Zone de texte de l'affichage de l'historique
-    private JTextArea historiqueDisplay;
-
-    //Boutton annuler dernier coup
-    private JButton annulerCoup;
-
-    //Label chrono blanc
-    private JLabel chronob;
-
-    //Label chrono noir
-    private JLabel chronon;
-
-    //Affichage des coordonnees ordonnees du plateau
+    /**
+     * Affichage des coordonnees ordonnees du plateau
+     */
     private JPanel coordOrdonnee;
 
-    //Stock le nombre de joueur
+    /**
+     * Affichage du joueur courant
+     */
+    private JoueurCourant joueurCourant;
+
+    /**
+     * Affichage de la main
+     */
+
+    /**
+     * Stock le nombre de joueur
+     */
     private int nbJoueur;
+
 
     /**
      * Constructeur
