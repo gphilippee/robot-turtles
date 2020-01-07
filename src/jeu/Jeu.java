@@ -101,17 +101,15 @@ public class Jeu {
     /**
      *
      */
-    public ArrayList<Joueur> generateOrdreJoueur(int nbJoueur){
+    public ArrayList<Joueur> generateOrdreJoueur(int nbJoueur) {
         ArrayList<Joueur> listJoueur = new ArrayList<>();
 
-        if (nbJoueur<3){
-            listJoueur.add(joueurBleu);
-            listJoueur.add(joueurRouge);
-        }
-        if (nbJoueur<4){
+        listJoueur.add(joueurBleu);
+        listJoueur.add(joueurRouge);
+        if (nbJoueur >= 3) {
             listJoueur.add(joueurVert);
         }
-        if(nbJoueur<5){
+        if (nbJoueur >= 4) {
             listJoueur.add(joueurRose);
         }
         Collections.shuffle(listJoueur);
@@ -119,20 +117,26 @@ public class Jeu {
 
     }
 
-    public void getPremierJoueur(){
-        this.joueurCourant=ordreJoueur.get(1);
+    public void getPremierJoueur() {
+        this.joueurCourant = ordreJoueur.get(0);
+    }
+
+    public String getCouleurJoueurCourant() {
+        return this.joueurCourant.getCouleur();
+
     }
 
     /**
      * Designe comme piece selectionnee
+     *
      * @param x coordonnee en abscisse de la futur piece selectionnee
      * @param y coordonnee en ordonnee de la futur piece selectionnee
      */
-    public void setPieceSelectionee(int x, int y){
+    public void setPieceSelectionee(int x, int y) {
         pieceSelectionee = plateau.getCase(x, y);
         fenetre.getGrille().ajouterDeplacementPossible(pieceSelectionee.casesPossibles());
 
-        if(fenetre != null){
+        if (fenetre != null) {
             fenetre.repaint();
         }
     }
@@ -175,13 +179,13 @@ public class Jeu {
      * Change le joueur courant
      */
     public void switchJoueur() {
-        int index=0;
-        for (int i=0;i<ordreJoueur.size();i++){
-            if (joueurCourant==ordreJoueur.get(i)){
-                index=i;
+        int index = 0;
+        for (int i = 0; i < ordreJoueur.size(); i++) {
+            if (joueurCourant == ordreJoueur.get(i)) {
+                index = i;
             }
         }
-        joueurCourant = ordreJoueur.get((index+1)%4);
+        joueurCourant = ordreJoueur.get((index + 1) % 4);
     }
 
     /**
@@ -189,7 +193,8 @@ public class Jeu {
      *
      * @return la reference du joueurCourant
      */
-    public Joueur getJoueurCourant() { return joueurCourant;
+    public Joueur getJoueurCourant() {
+        return joueurCourant;
     }
 
     /**
@@ -197,14 +202,18 @@ public class Jeu {
      *
      * @return la reference du joueurBleu
      */
-    public Joueur getJoueurBleu() { return joueurBleu; }
+    public Joueur getJoueurBleu() {
+        return joueurBleu;
+    }
 
     /**
      * Getter pour le joueur rouge
      *
      * @return la reference du joueurRouge
      */
-    public Joueur getJoueurRouge() { return joueurRouge; }
+    public Joueur getJoueurRouge() {
+        return joueurRouge;
+    }
 
     /**
      * Getter pour le joueur vert
@@ -229,7 +238,8 @@ public class Jeu {
      *
      * @param j joueurCourant
      */
-    public void setJoueurCourant(Joueur j) { this.joueurCourant = j;
+    public void setJoueurCourant(Joueur j) {
+        this.joueurCourant = j;
     }
 
     /**
@@ -237,7 +247,8 @@ public class Jeu {
      *
      * @return fenetre
      */
-    public Fenetre getFenetre() { return this.fenetre;
+    public Fenetre getFenetre() {
+        return this.fenetre;
     }
 
     /**
@@ -245,14 +256,18 @@ public class Jeu {
      *
      * @return Plateau
      */
-    public Plateau getPlateau() { return this.plateau;
+    public Plateau getPlateau() {
+        return this.plateau;
     }
 
     /**
      * Getter nbJoueur
+     *
      * @return nbJoueur
      */
-    public int getNbJoueur(){ return this.nbJoueur; }
+    public int getNbJoueur() {
+        return this.nbJoueur;
+    }
 
 }
 

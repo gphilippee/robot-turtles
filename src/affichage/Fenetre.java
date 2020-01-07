@@ -52,7 +52,6 @@ public class Fenetre extends JFrame implements ActionListener{
      */
     private int nbJoueur;
 
-
     /**
      * Constructeur
      * @param x position x de la fenetre
@@ -86,6 +85,10 @@ public class Fenetre extends JFrame implements ActionListener{
         grille = new GrilleJeu(this);
         grille.setPreferredSize(new Dimension(Case.CASE_LENGTH * 8, Case.CASE_LENGTH * 8));
 
+        //Affichage du joueur courant
+        joueurCourant = new JoueurCourant(this);
+        joueurCourant.setPreferredSize(new Dimension(Case.CASE_LENGTH * 6, Case.CASE_LENGTH));
+
         //Coords
         coordAbscisse = new JPanel();
         coordAbscisse.setLayout(new GridLayout(1, 8));
@@ -94,6 +97,7 @@ public class Fenetre extends JFrame implements ActionListener{
             c.setPreferredSize(new Dimension(Case.CASE_LENGTH, 10));
             coordAbscisse.add(c);
         }
+
         coordOrdonnee = new JPanel();
         coordOrdonnee.setLayout(new GridLayout(8, 1));
         for(int i = 8; i >= 1; i--){
@@ -106,14 +110,21 @@ public class Fenetre extends JFrame implements ActionListener{
         conteneurGeneral.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        gbc.gridx = 0;
+        //Placement de affichage joueur courant
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(0, 10, 0, 0);
+        conteneurGeneral.add(joueurCourant, gbc);
+
+        //Placement des ordonnees
+        gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridheight = 1;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 10, 0, 0);
-
-        //Placement des ordonnees
-        gbc.gridx = 1;
         conteneurGeneral.add(coordOrdonnee, gbc);
 
         //Placement de la grille
