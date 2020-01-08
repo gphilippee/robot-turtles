@@ -14,6 +14,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Menu test=new Menu();
+        Menu test = new Menu();
+
     }
+
 }

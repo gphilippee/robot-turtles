@@ -51,33 +51,42 @@ public class Plateau {
         }
         switch (nbJoueur) {
             case 2:
-                setCase(1, 7, new Tortue(1, 7, "BLEU", this));
-                setCase(5, 7, new Tortue(5, 7, "ROUGE", this));
+                jeu.getJoueurBleu().setTortue(new Tortue(1, 7, "BLEU", 'S', this));
+                jeu.getJoueurRouge().setTortue(new Tortue(5, 7, "ROUGE", 'S', this));
+                setCase(1, 7, jeu.getJoueurBleu().getTortue());
+                setCase(5, 7, jeu.getJoueurRouge().getTortue());
                 setCase(3, 0, new Joyau(3, 0, "BLEU", this));
                 //Placer mur de pierre
                 for (int i = 0; i < 8; i++) {
-                    setCase(7,i,new murPierre(7,i,"PIERRE",this));
+                    setCase(7, i, new murPierre(7, i, "PIERRE", this));
                 }
                 break;
 
             case 3:
-                setCase(0, 7, new Tortue(0, 7, "BLEU", this));
-                setCase(3, 7, new Tortue(3, 7, "ROUGE", this));
-                setCase(6, 7, new Tortue(6, 7, "VERT", this));
+                jeu.getJoueurBleu().setTortue(new Tortue(0, 7, "BLEU", 'S', this));
+                jeu.getJoueurRouge().setTortue(new Tortue(3, 7, "ROUGE", 'S', this));
+                jeu.getJoueurVert().setTortue(new Tortue(7, 7, "VERT", 'S', this));
+                setCase(0, 7, jeu.getJoueurBleu().getTortue());
+                setCase(3, 7, jeu.getJoueurRouge().getTortue());
+                setCase(6, 7, jeu.getJoueurVert().getTortue());
                 setCase(0, 0, new Joyau(0, 0, "BLEU", this));
                 setCase(3, 0, new Joyau(3, 0, "ROUGE", this));
                 setCase(6, 0, new Joyau(6, 0, "VERT", this));
                 //Placer mur de pierre
                 for (int i = 0; i < 8; i++) {
-                    setCase(7,i,new murPierre(7,i,"PIERRE",this));
+                    setCase(7, i, new murPierre(7, i, "PIERRE", this));
                 }
                 break;
 
             case 4:
-                setCase(0, 7, new Tortue(0, 7, "BLEU", this));
-                setCase(2, 0, new Tortue(2, 0, "ROUGE", this));
-                setCase(5, 7, new Tortue(5, 7, "VERT", this));
-                setCase(7, 7, new Tortue(7, 7, "ROSE", this));
+                jeu.getJoueurBleu().setTortue(new Tortue(0, 7, "BLEU", 'S', this));
+                jeu.getJoueurRouge().setTortue(new Tortue(2, 7, "ROUGE", 'S', this));
+                jeu.getJoueurVert().setTortue(new Tortue(5, 7, "VERT", 'S', this));
+                jeu.getJoueurRose().setTortue(new Tortue(7, 7, "ROSE", 'S', this));
+                setCase(0, 7, jeu.getJoueurBleu().getTortue());
+                setCase(2, 7, jeu.getJoueurRouge().getTortue());
+                setCase(5, 7, jeu.getJoueurVert().getTortue());
+                setCase(7, 7, jeu.getJoueurRose().getTortue());
                 setCase(1, 0, new Joyau(1, 0, "BLEU", this));
                 setCase(6, 0, new Joyau(6, 0, "ROUGE", this));
                 break;

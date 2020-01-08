@@ -20,7 +20,7 @@ public class Menu extends JFrame implements ActionListener, MouseListener {
 
     private Background background;
 
-    public Menu(){
+    public Menu() {
         super("Robot Turtles");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(620, 802);
@@ -33,7 +33,7 @@ public class Menu extends JFrame implements ActionListener, MouseListener {
     /**
      * Instancie et positionne les elements de la fenetre
      */
-    public void initFenetre(){
+    public void initFenetre() {
         //Initialise les boutons
         Dimension taille = new Dimension(150, 50);
 
@@ -46,16 +46,10 @@ public class Menu extends JFrame implements ActionListener, MouseListener {
         background.setLayout(new GridBagLayout());
         this.setContentPane(background);
 
-        /**
-        JLabel titre = new JLabel("Robot Turtles");
-        titre.setFont(new Font("Dialog", Font.BOLD,50));
-        titre.setHorizontalAlignment(JLabel.CENTER);
-         */
-
         //Positionnement
         GridBagConstraints gbc = new GridBagConstraints();
 
-        //positionnement deux joueurs
+        //Positionnement jouer
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -72,8 +66,8 @@ public class Menu extends JFrame implements ActionListener, MouseListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        if(source == jouer){
-            new selectionJoueur(this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2,this);
+        if (source == jouer) {
+            new selectionJoueur(this.getX() + this.getWidth() / 2, this.getY() + this.getHeight() / 2, this);
         }
     }
 

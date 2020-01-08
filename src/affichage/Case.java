@@ -6,6 +6,7 @@ import jeu.tuile.Tuile;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 
 /**
@@ -19,11 +20,16 @@ public class Case extends JPanel {
     public static final int CASE_LENGTH = 60;
 
     /**
+     * Taille d'une case, la taille de l'image d'une piece
+     */
+    public static final int CARTE_WIDTH = 90;
+
+    /**
      * Etat de la case : si elle est selectionee, que l'on peut deplacer sa piece dessus, ou rien
      */
-    public enum Etat{
+    public enum Etat {
         RIEN, SELECTIONE, DEPLACEMENT_POSSIBLE, DERNIER_COUP
-    };
+    }
 
     /**
      * Coordonnee en abscisse
@@ -46,6 +52,11 @@ public class Case extends JPanel {
     protected String couleur;
 
     /**
+     * Direction de la tortue
+     */
+    protected char direction;
+
+    /**
      * Boolean : si la case contient une piece alors vrai
      */
     protected boolean contientPiece;
@@ -62,11 +73,12 @@ public class Case extends JPanel {
 
     /**
      * Constructeur d'une case vide
-     * @param x coordonnee en abscisse
-     * @param y coordonnee en ordonnee
+     *
+     * @param x               coordonnee en abscisse
+     * @param y               coordonnee en ordonnee
      * @param backgroundColor couleur du fond
      */
-    public Case(int x, int y, Color backgroundColor){
+    public Case(int x, int y, Color backgroundColor) {
         this.x = x;
         this.y = y;
         this.backgroundColor = backgroundColor;
@@ -78,12 +90,12 @@ public class Case extends JPanel {
     /**
      * Gere l'affichage de la case selon son etat et la piece qu'elle contient
      */
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         //fond
         g.setColor(backgroundColor);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-        if(!etat.equals(Etat.RIEN)){
+        if (!etat.equals(Etat.RIEN)) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(
                     RenderingHints.KEY_ANTIALIASING,
@@ -91,11 +103,11 @@ public class Case extends JPanel {
             g2d.setComposite(AlphaComposite.getInstance(
                     AlphaComposite.SRC_OVER, 0.3f));
             Color select = null;
-            if(etat.equals(Etat.SELECTIONE)){
+            if (etat.equals(Etat.SELECTIONE)) {
                 select = new Color(0, 102, 51);
-            }else if(etat.equals(Etat.DEPLACEMENT_POSSIBLE)){
+            } else if (etat.equals(Etat.DEPLACEMENT_POSSIBLE)) {
                 select = new Color(0, 204, 0);
-            }else if(etat.equals(Etat.DERNIER_COUP)){
+            } else if (etat.equals(Etat.DERNIER_COUP)) {
                 select = new Color(0, 0, 255);
             }
             g2d.setColor(select);
@@ -105,80 +117,99 @@ public class Case extends JPanel {
         }
 
 
-        if(contientPiece){
+        if (contientPiece) {
             //Dessine l'image de la piece
             String couleurFile = couleur.toLowerCase();
             Image imgPiece = null;
-            try{
-                imgPiece = ImageIO.read(getClass().getResource(Main.RES_PATH+famille.toLowerCase()+"_"+couleurFile+".png"));
-                g.drawImage(imgPiece, 0, 0, this);
-            }catch(IOException e){
-                System.out.println("Impossible de charger l'image "+getClass().getResource("src/images/"+famille.toLowerCase()+"_"+couleurFile+".png"));
+            try {
+                imgPiece = ImageIO.read(getClass().getResource(Main.RES_PATH + famille.toLowerCase() + "_" + couleurFile + ".png"));
+                AffineTransform rotation = new AffineTransform();
+                Graphics2D g2 = (Graphics2D) g;
+                if (famille == "TORTUE") {
+                    if (direction == 'S') {
+                        rotation.rotate(Math.toRadians(180), imgPiece.getWidth(this) / 2, imgPiece.getHeight(this) / 2);
+                    } else if (direction == 'O') {
+                        rotation.rotate(Math.toRadians(90), imgPiece.getWidth(this) / 2, imgPiece.getHeight(this) / 2);
+                    } else if (direction == 'E') {
+                        rotation.rotate(Math.toRadians(-90), imgPiece.getWidth(this) / 2, imgPiece.getHeight(this) / 2);
+                    }
+                }
+                g2.drawImage(imgPiece, rotation, this);
+            } catch (IOException e) {
+                System.out.println("Impossible de charger l'image " + getClass().getResource("src/images/" + famille.toLowerCase() + "_" + couleurFile + ".png"));
             }
         }
     }
 
     /**
      * Met a jour la case en y placant la piece passee en argument
+     *
      * @param p Piece a placer sur la case
      */
-    public void updateCase(Tuile p){
-        if(p == null){
+    public void updateCase(Tuile p) {
+        if (p == null) {
             this.famille = "";
             this.couleur = "";
             this.contientPiece = false;
-        }else{
+        } else {
             this.famille = p.getFamille();
             this.couleur = p.getCouleur();
+            this.direction = p.getDirection();
             this.contientPiece = true;
         }
     }
 
     /**
      * Getter de l'abscisse de la Case sur la grille
+     *
      * @return x
      */
-    public int getXTableau(){
+    public int getXTableau() {
         return x;
     }
 
     /**
      * Getter de l'ordonnee de la Case sur la grille
+     *
      * @return y
      */
-    public int getYTableau(){
+    public int getYTableau() {
         return y;
     }
 
     /**
      * Getter de la couleur de la piece sur la case
+     *
      * @return String
      */
-    public String getCouleur(){
+    public String getCouleur() {
         return couleur;
     }
 
     /**
      * Getter de l'etat de la case
+     *
      * @return etat
      */
-    public Etat getEtat(){
+    public Etat getEtat() {
         return etat;
     }
 
     /**
      * Setter de l'etat de la case
+     *
      * @param e
      */
-    public void setEtat(Etat e){
+    public void setEtat(Etat e) {
         this.etat = e;
     }
 
     /**
      * Permet de savoir si la case contient une piece
+     *
      * @return le resultat du test
      */
-    public boolean contientPiece(){
+    public boolean contientPiece() {
         return contientPiece;
     }
 }

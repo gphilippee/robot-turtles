@@ -1,20 +1,12 @@
 package affichage;
 
-import jeu.Joueur;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Affiche le joueur courant pour la fenetre de replay
  */
-public class JoueurCourant extends JPanel{
+public class JoueurCourant extends JPanel {
 
     /**
      * Affichage du joueur bleu
@@ -43,9 +35,10 @@ public class JoueurCourant extends JPanel{
 
     /**
      * Constructeur
+     *
      * @param fenetre
      */
-    public JoueurCourant(Fenetre fenetre){
+    public JoueurCourant(Fenetre fenetre) {
         super();
         this.fenetre = fenetre;
         initConteneur();
@@ -54,17 +47,17 @@ public class JoueurCourant extends JPanel{
     /**
      * Instancie et positionne les elements
      */
-    private void initConteneur(){
-        joueurBleu = new CaseJoueur(Color.BLUE,isTour("BLEU"));
+    private void initConteneur() {
+        joueurBleu = new CaseJoueur(Color.BLUE, isTour("BLEU"));
         joueurBleu.setPreferredSize(new Dimension(Case.CASE_LENGTH, Case.CASE_LENGTH));
 
-        joueurRouge = new CaseJoueur(Color.RED,isTour("ROUGE"));
+        joueurRouge = new CaseJoueur(Color.RED, isTour("ROUGE"));
         joueurRouge.setPreferredSize(new Dimension(Case.CASE_LENGTH, Case.CASE_LENGTH));
 
-        joueurVert = new CaseJoueur(Color.GREEN,isTour("VERT"));
+        joueurVert = new CaseJoueur(Color.GREEN, isTour("VERT"));
         joueurVert.setPreferredSize(new Dimension(Case.CASE_LENGTH, Case.CASE_LENGTH));
 
-        joueurRose = new CaseJoueur(Color.PINK,isTour("ROSE"));
+        joueurRose = new CaseJoueur(Color.PINK, isTour("ROSE"));
         joueurRose.setPreferredSize(new Dimension(Case.CASE_LENGTH, Case.CASE_LENGTH));
 
         JLabel textTour = new JLabel("TOUR", JLabel.CENTER);
@@ -77,7 +70,7 @@ public class JoueurCourant extends JPanel{
         gbc.gridheight = 1;
         gbc.gridwidth = 1;
 
-        if(fenetre.getNbJoueur()>=3){
+        if (fenetre.getNbJoueur() >= 3) {
             //placement joueur vert
             gbc.gridx = 0;
             this.add(joueurVert, gbc);
@@ -96,7 +89,7 @@ public class JoueurCourant extends JPanel{
         gbc.gridx = 3;
         this.add(joueurRouge, gbc);
 
-        if(fenetre.getNbJoueur()==4){
+        if (fenetre.getNbJoueur() == 4) {
             //placement joueur rose
             gbc.gridx = 4;
             this.add(joueurRose, gbc);
@@ -104,36 +97,31 @@ public class JoueurCourant extends JPanel{
 
     }
 
-    public boolean isTour(String couleur){
+    public boolean isTour(String couleur) {
 
-        if(couleur==fenetre.getJeu().getJoueurCourant().getCouleur()){
-            return true;
-        }
-        return false;
+        return couleur == fenetre.getJeu().getJoueurCourant().getCouleur();
     }
 
     /**
      * Mise a jour du joueur courant
      */
-    public void update(){
-        if(fenetre.getJeu() == null || fenetre.getJeu().getJoueurCourant().getCouleur().equals("ROUGE")){
+    public void update() {
+        if (fenetre.getJeu() == null || fenetre.getJeu().getJoueurCourant().getCouleur().equals("ROUGE")) {
             joueurBleu.isTour = false;
             joueurRouge.isTour = true;
             joueurVert.isTour = false;
             joueurRose.isTour = false;
-        }else if(fenetre.getJeu().getJoueurCourant().getCouleur().equals("BLEU")){
+        } else if (fenetre.getJeu().getJoueurCourant().getCouleur().equals("BLEU")) {
             joueurBleu.isTour = true;
             joueurRouge.isTour = false;
             joueurVert.isTour = false;
             joueurRose.isTour = false;
-        }
-        else if(fenetre.getJeu().getJoueurCourant().getCouleur().equals("VERT")){
+        } else if (fenetre.getJeu().getJoueurCourant().getCouleur().equals("VERT")) {
             joueurBleu.isTour = false;
             joueurRouge.isTour = false;
             joueurVert.isTour = true;
             joueurRose.isTour = false;
-        }
-        else if(fenetre.getJeu().getJoueurCourant().getCouleur().equals("ROSE")){
+        } else if (fenetre.getJeu().getJoueurCourant().getCouleur().equals("ROSE")) {
             joueurBleu.isTour = false;
             joueurRouge.isTour = false;
             joueurVert.isTour = false;
@@ -145,7 +133,7 @@ public class JoueurCourant extends JPanel{
 /**
  * Un element de l'affichage joueur courant
  */
-class CaseJoueur extends JPanel{
+class CaseJoueur extends JPanel {
 
     /**
      * Vrai si c'est le tour de cet element
@@ -159,9 +147,10 @@ class CaseJoueur extends JPanel{
 
     /**
      * Constructeur
+     *
      * @param couleur
      */
-    public CaseJoueur(Color couleur,boolean isTour){
+    public CaseJoueur(Color couleur, boolean isTour) {
         super();
         this.couleur = couleur;
         this.isTour = isTour;
@@ -169,13 +158,13 @@ class CaseJoueur extends JPanel{
 
 
     @Override
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         g.setColor(couleur);
-        if(!isTour){
-            g.fillRect(this.getWidth() * 3/8, this.getHeight() * 3/8, this.getWidth() / 4, this.getHeight() / 4);
+        if (!isTour) {
+            g.fillRect(this.getWidth() * 3 / 8, this.getHeight() * 3 / 8, this.getWidth() / 4, this.getHeight() / 4);
             g.setColor(Color.GRAY);
-            g.drawRect(this.getWidth() * 3/8, this.getHeight() * 3/8, this.getWidth() / 4, this.getHeight() / 4);
-        }else{
+            g.drawRect(this.getWidth() * 3 / 8, this.getHeight() * 3 / 8, this.getWidth() / 4, this.getHeight() / 4);
+        } else {
             g.fillRect(this.getWidth() / 4, this.getHeight() / 4, this.getWidth() / 2, this.getHeight() / 2);
             g.setColor(Color.GRAY);
             g.drawRect(this.getWidth() / 4, this.getHeight() / 4, this.getWidth() / 2, this.getHeight() / 2);
