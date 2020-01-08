@@ -1,11 +1,10 @@
-package affichage;
+package affichage.jeu;
 
+import affichage.Case;
 import affichage.Case.Etat;
-import jeu.Coordonnee;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Conteneur qui contient toutes les cases du jeu d'echecs a afficher
@@ -93,55 +92,8 @@ public class GrilleJeu extends JComponent {
         for (int i = 0; i < contenu.length; i++) {
             if (contenu[i].getClass().equals(CaseJeu.class)) {
                 CaseJeu c = (CaseJeu) contenu[i];
-                if (c.getEtat().equals(Case.Etat.DEPLACEMENT_POSSIBLE) || c.getEtat().equals(Case.Etat.SELECTIONE)) {
+                if (c.getEtat().equals(Case.Etat.SELECTIONE)) {
                     c.setEtat(Case.Etat.RIEN);
-                }
-            }
-        }
-    }
-
-    /**
-     * Marque la case comme etant le dernier coup joue
-     *
-     * @param x position en x
-     * @param y position en y
-     */
-    public void setCaseDernierCoup(int x, int y) {
-        Component[] contenu = this.getComponents();
-        for (int i = 0; i < contenu.length; i++) {
-            if (contenu[i].getClass().equals(CaseJeu.class)) {
-                CaseJeu c = (CaseJeu) contenu[i];
-                if (c.getXTableau() == x && c.getYTableau() == y) {
-                    c.setEtat(Case.Etat.DERNIER_COUP);
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Passe l'etat de toutes les Cases, correspondant aux Pieces de la liste, a DEPLACEMENT_POSSIBLE
-     *
-     * @param arrayList une liste de toute les Pieces ou l'on peut deplacer la piece courante.
-     */
-    public void ajouterDeplacementPossible(ArrayList<Coordonnee> arrayList) {
-        if (this.affichageAideDeplacement) {
-            if (arrayList == null || !affichageAideDeplacement) {
-                return;
-            }
-
-            Component[] contenu = this.getComponents();
-            for (int i = 0; i < contenu.length; i++) {
-                if (!arrayList.isEmpty()) {
-                    for (int j = 0; j < arrayList.size(); j++) {
-                        CaseJeu c = (CaseJeu) contenu[i];
-                        if (c.getXTableau() == arrayList.get(j).x && c.getYTableau() == arrayList.get(j).y) {
-                            c.setEtat(Case.Etat.DEPLACEMENT_POSSIBLE);
-                            arrayList.remove(j);
-                            break;
-
-                        }
-                    }
                 }
             }
         }

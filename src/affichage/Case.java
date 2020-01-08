@@ -20,15 +20,10 @@ public class Case extends JPanel {
     public static final int CASE_LENGTH = 60;
 
     /**
-     * Taille d'une case, la taille de l'image d'une piece
-     */
-    public static final int CARTE_WIDTH = 90;
-
-    /**
      * Etat de la case : si elle est selectionee, que l'on peut deplacer sa piece dessus, ou rien
      */
     public enum Etat {
-        RIEN, SELECTIONE, DEPLACEMENT_POSSIBLE, DERNIER_COUP
+        RIEN, SELECTIONE
     }
 
     /**
@@ -101,21 +96,16 @@ public class Case extends JPanel {
                     RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setComposite(AlphaComposite.getInstance(
-                    AlphaComposite.SRC_OVER, 0.3f));
+                    AlphaComposite.SRC_OVER, 0.5f));
             Color select = null;
             if (etat.equals(Etat.SELECTIONE)) {
                 select = new Color(0, 102, 51);
-            } else if (etat.equals(Etat.DEPLACEMENT_POSSIBLE)) {
-                select = new Color(0, 204, 0);
-            } else if (etat.equals(Etat.DERNIER_COUP)) {
-                select = new Color(0, 0, 255);
             }
             g2d.setColor(select);
             g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
             g2d.setComposite(AlphaComposite.getInstance(
                     AlphaComposite.SRC_OVER, 1.0f));
         }
-
 
         if (contientPiece) {
             //Dessine l'image de la piece
@@ -139,6 +129,7 @@ public class Case extends JPanel {
                 System.out.println("Impossible de charger l'image " + getClass().getResource("src/images/" + famille.toLowerCase() + "_" + couleurFile + ".png"));
             }
         }
+
     }
 
     /**
@@ -179,7 +170,6 @@ public class Case extends JPanel {
 
     /**
      * Getter de la couleur de la piece sur la case
-     *
      * @return String
      */
     public String getCouleur() {
@@ -188,7 +178,6 @@ public class Case extends JPanel {
 
     /**
      * Getter de l'etat de la case
-     *
      * @return etat
      */
     public Etat getEtat() {
@@ -197,7 +186,6 @@ public class Case extends JPanel {
 
     /**
      * Setter de l'etat de la case
-     *
      * @param e
      */
     public void setEtat(Etat e) {
@@ -206,7 +194,6 @@ public class Case extends JPanel {
 
     /**
      * Permet de savoir si la case contient une piece
-     *
      * @return le resultat du test
      */
     public boolean contientPiece() {

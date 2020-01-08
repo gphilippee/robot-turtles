@@ -1,6 +1,10 @@
-package affichage;
+package affichage.jeu;
 
 
+import affichage.Case;
+import affichage.JoueurCourant;
+import affichage.MainJoueur;
+import affichage.choixAction;
 import jeu.Jeu;
 
 import javax.swing.*;
@@ -48,12 +52,17 @@ public class Fenetre extends JFrame implements ActionListener {
     /**
      * Affichage de la main
      */
-    private choixAction choixAction;
+    private affichage.choixAction choixAction;
 
     /**
      * Stock le nombre de joueur
      */
     private int nbJoueur;
+
+    /**
+     * Zone de text pour l'affichage d'informations sur la partie
+     */
+    private JTextArea logsPartie;
 
     /**
      * Constructeur
@@ -67,7 +76,7 @@ public class Fenetre extends JFrame implements ActionListener {
         jeu = new Jeu(this);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //Default : 14 / 12
-        Dimension dim = new Dimension(60 * 13, 60 * 13);
+        Dimension dim = new Dimension(60 * 16, 60 * 13);
         this.setSize(dim);
         this.setMinimumSize(dim);
         initFenetre();
@@ -92,11 +101,25 @@ public class Fenetre extends JFrame implements ActionListener {
 
         //Affichage du joueur courant
         joueurCourant = new JoueurCourant(this);
-        joueurCourant.setPreferredSize(new Dimension(Case.CASE_LENGTH * 6, Case.CASE_LENGTH));
+        joueurCourant.setPreferredSize(new Dimension(Case.CASE_LENGTH * 8, Case.CASE_LENGTH));
 
         //Affichage du choix action
-        choixAction = new choixAction();
+        choixAction = new choixAction(this);
         choixAction.setPreferredSize(new Dimension(Case.CASE_LENGTH * 3, Case.CASE_LENGTH * 2));
+
+        //Logs de la partie
+        logsPartie = new JTextArea();
+        logsPartie.setEditable(false);
+        logsPartie.setLineWrap(true);
+        logsPartie.setMargin(new Insets(5, 5, 5, 5));
+        JScrollPane scrollZone = new JScrollPane(logsPartie);
+        scrollZone.setPreferredSize(new Dimension(Case.CASE_LENGTH * 6, Case.CASE_LENGTH * 8));
+        scrollZone.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
+        //Ajout du texte
+        this.addLogPartie("Bienvenue sur Robot Turtles");
+        this.addLogPartie("Vous avez choisi le mode " + nbJoueur + " joueurs.");
+
 
         //Coords
         coordAbscisse = new JPanel();
@@ -120,8 +143,8 @@ public class Fenetre extends JFrame implements ActionListener {
         this.setJMenuBar(b);
 
         //Affichage de la main
-        mainJoueur = new MainJoueur(this, jeu);
-        mainJoueur.setPreferredSize(new Dimension(Case.CASE_LENGTH * 8, Case.CASE_LENGTH * 2));
+        mainJoueur = new MainJoueur(this);
+        mainJoueur.setPreferredSize(new Dimension(470, Case.CASE_LENGTH * 2));
 
         //Positionnement sur le GridBagLayout
         conteneurGeneral.setLayout(new GridBagLayout());
@@ -132,7 +155,6 @@ public class Fenetre extends JFrame implements ActionListener {
         gbc.gridy = 0;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.gridheight = 1;
-        gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(0, 10, 0, 0);
         conteneurGeneral.add(joueurCourant, gbc);
 
@@ -148,6 +170,12 @@ public class Fenetre extends JFrame implements ActionListener {
         gbc.gridx = 2;
         gbc.insets = new Insets(0, 10, 0, 10);
         conteneurGeneral.add(grille, gbc);
+
+        //Placement des logs de la partie
+        gbc.gridx = 3;
+        gbc.insets = new Insets(0, 10, 0, 0);
+        gbc.gridwidth = 1;
+        conteneurGeneral.add(scrollZone, gbc);
 
         //Placement des abscisses
         gbc.gridx = 2;
@@ -165,7 +193,7 @@ public class Fenetre extends JFrame implements ActionListener {
 
         //Placement du choix de l'action
         gbc.gridx = 3;
-        gbc.gridy = 1;
+        gbc.gridy = 3;
         gbc.gridheight = 1;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 10, 0, 10);
@@ -182,6 +210,8 @@ public class Fenetre extends JFrame implements ActionListener {
 
     @Override
     public void repaint() {
+        this.grille.updateGrille();
+        this.joueurCourant.update();
         super.repaint();
     }
 
@@ -192,6 +222,16 @@ public class Fenetre extends JFrame implements ActionListener {
      */
     public Jeu getJeu() {
         return jeu;
+    }
+
+    /**
+     * Ajoute un message au logs de la partie
+     *
+     * @param s message
+     */
+    public void addLogPartie(String s) {
+        logsPartie.append(s + "\n");
+        logsPartie.setCaretPosition(logsPartie.getDocument().getLength());
     }
 
     /**

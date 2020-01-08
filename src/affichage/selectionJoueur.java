@@ -1,5 +1,7 @@
 package affichage;
 
+import affichage.jeu.Fenetre;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

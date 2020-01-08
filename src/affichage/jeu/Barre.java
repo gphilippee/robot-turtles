@@ -1,4 +1,6 @@
-package affichage;
+package affichage.jeu;
+
+import affichage.Menu;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

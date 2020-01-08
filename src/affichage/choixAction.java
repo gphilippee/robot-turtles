@@ -1,5 +1,8 @@
 package affichage;
 
+import affichage.jeu.Fenetre;
+import jeu.Jeu;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,16 +13,28 @@ import java.awt.event.ActionListener;
  */
 public class choixAction extends JPanel implements ActionListener {
 
-    //Bouton completer le programme
+    /**
+     * Bouton completer le programme
+     */
     private JButton completeProgramme;
 
-    //Bouton construire un mur
+    /**
+     * Bouton construire un mur
+     */
     private JButton construireMur;
 
-    //Bouton exectuer le programme
+    /**
+     * Bouton exectuer le programme
+     */
     private JButton executeProgramme;
 
-    public choixAction() {
+    /**
+     * Instancie la fenetre
+     */
+    protected Fenetre fenetre;
+
+    public choixAction(Fenetre fenetre) {
+        this.fenetre = fenetre;
         initConteneur();
 
     }
@@ -47,12 +62,27 @@ public class choixAction extends JPanel implements ActionListener {
         Object source = e.getSource();
 
         if (source == completeProgramme) {
+            //Pour eviter le spam
+            if (fenetre.getJeu().getAction() != Jeu.Action.COMPLETE) {
+                fenetre.addLogPartie("Vous avez choisi de completer le programme.");
+                fenetre.getJeu().setAction(Jeu.Action.COMPLETE);
+            }
+
         }
 
         if (source == construireMur) {
+            if (fenetre.getJeu().getAction() != Jeu.Action.CONSTRUIRE) {
+                fenetre.addLogPartie("Vous avez choisi de construire un mur.");
+                fenetre.getJeu().setAction(Jeu.Action.CONSTRUIRE);
+            }
+
         }
 
         if (source == executeProgramme) {
+            if (fenetre.getJeu().getAction() != Jeu.Action.EXECUTE) {
+                fenetre.addLogPartie("Vous avez choisi d'executer le programme.");
+                fenetre.getJeu().setAction(Jeu.Action.EXECUTE);
+            }
 
         }
     }

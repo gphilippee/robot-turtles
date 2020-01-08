@@ -1,11 +1,10 @@
 package affichage;
 
-import jeu.Jeu;
-import jeu.tuile.Tuile;
+import affichage.jeu.CarteJoueur;
+import affichage.jeu.Fenetre;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Conteneur qui les cartes a afficher
@@ -15,37 +14,45 @@ public class MainJoueur extends JComponent {
     /**
      * Instance de la fenetre qui contient la grille
      */
-    protected Jeu jeu;
-
-    /**
-     * Instance de la fenetre qui contient la grille
-     */
     protected Fenetre fenetre;
 
     /**
      * Constructeur
-     *
-     * @param jeu reference du jeu
+     * @param fenetre
      */
-    public MainJoueur(Fenetre fenetre, Jeu jeu) {
+    public MainJoueur(Fenetre fenetre) {
         super();
-        this.jeu = jeu;
         this.fenetre = fenetre;
         initMain();
-
+        updateMain();
     }
 
     /**
      * Initialise les 5 cartes de la main
      */
     public void initMain() {
-        this.setLayout(new GridLayout(1, 5));
-        Color backgroundColor = Color.WHITE;
-        ArrayList<Tuile> mainTemp = jeu.getJoueurCourant().getMainCarte();
+        this.setLayout(new GridLayout(1, 5, 10, 0));
         for (int i = 0; i < 5; i++) {
-            CarteJoueur c = new CarteJoueur(jeu,mainTemp.get(i));
+            CarteJoueur c = new CarteJoueur(i, fenetre);
             this.add(c);
         }
     }
+
+    /**
+     *
+     */
+    public void updateMain() {
+        Component[] contenu = this.getComponents();
+        for (int i = 0; i < contenu.length; i++) {
+            //Si le composant est une carte
+            if (contenu[i].getClass().equals(CarteJoueur.class)) {
+                //Mise a jour de la case selon sa m�me position dans la main
+                CarteJoueur c = (CarteJoueur) contenu[i];
+                c.updateCarte(fenetre.getJeu().getJoueurCourant().getMainCarte().get(c.getIndiceCarte()));
+            }
+        }
+    }
+
+
 
 }

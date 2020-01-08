@@ -1,6 +1,6 @@
 package jeu;
 
-import affichage.Fenetre;
+import affichage.jeu.Fenetre;
 import jeu.tuile.Tuile;
 
 import java.util.ArrayList;
@@ -15,6 +15,13 @@ public class Jeu {
      * Plateau courant
      */
     protected Plateau plateau;
+
+    /**
+     *
+     */
+    public enum Action {AUCUNE, COMPLETE, EXECUTE, CONSTRUIRE, DEFAUSSE}
+
+    protected Action action;
 
     /**
      * Instance du Joueur bleu
@@ -42,9 +49,14 @@ public class Jeu {
     protected Joueur joueurCourant;
 
     /**
-     * Instance de la piece selectionnee par le joueur
+     * Instance des cartes de la main selectionnee par le joueur
      */
-    protected Tuile pieceSelectionee;
+    protected ArrayList<Tuile> cartesSelectionees;
+
+    /**
+     * Instance de la carte selectionnee par le joueur
+     */
+    protected Tuile carteSelectionee;
 
     /**
      * Instance de la fenetre de jeu
@@ -72,8 +84,9 @@ public class Jeu {
         joueurVert = null;
         joueurRose = null;
         joueurCourant = null;
-        pieceSelectionee = null;
+        cartesSelectionees = null;
         fenetre = null;
+        action = null;
     }
 
     /**
@@ -90,12 +103,14 @@ public class Jeu {
         joueurVert = new Joueur("VERT");
         joueurRose = new Joueur("ROSE");
         this.ordreJoueur = generateOrdreJoueur(fenetre.getNbJoueur());
+        action = Action.AUCUNE;
         /**
          * A changer
          */
         getPremierJoueur();
         this.fenetre = fenetre;
         plateau.miseEnPlacePlateau(nbJoueur);
+        cartesSelectionees = new ArrayList<>();
     }
 
     /**
@@ -117,38 +132,45 @@ public class Jeu {
 
     }
 
+    /**
+     * Getter : Joueur qui commence
+     */
     public void getPremierJoueur() {
         this.joueurCourant = ordreJoueur.get(0);
     }
 
-    public String getCouleurJoueurCourant() {
-        return this.joueurCourant.getCouleur();
-
-    }
-
     /**
-     * Designe comme piece selectionnee
-     *
-     * @param x coordonnee en abscisse de la futur piece selectionnee
-     * @param y coordonnee en ordonnee de la futur piece selectionnee
+     * @param indiceCarte
      */
-    public void setPieceSelectionee(int x, int y) {
-        pieceSelectionee = plateau.getCase(x, y);
-        fenetre.getGrille().ajouterDeplacementPossible(pieceSelectionee.casesPossibles());
-
+    public void addCarteSelectionnee(int indiceCarte) {
+        carteSelectionee = joueurCourant.getMainCarte().get(indiceCarte);
+        cartesSelectionees.add(carteSelectionee);
         if (fenetre != null) {
             fenetre.repaint();
         }
+
+    }
+
+    public void removeCarteSelectionnee(int indiceCarte) {
+        for (Tuile carte : cartesSelectionees) {
+            if (joueurCourant.getMainCarte().get(indiceCarte).equals(carte)) {
+                cartesSelectionees.remove(carte);
+            }
+        }
+        if (fenetre != null) {
+            fenetre.repaint();
+        }
+
     }
 
     /**
-     * Renvoi le test boolean de si la piece selectionnee est a null
-     *
-     * @return le resultat du test
+     * Getter : Cartes Selectionnees
+     * @return
      */
-    public boolean aucunePieceSelectionee() {
-        return pieceSelectionee == null;
+    public ArrayList<Tuile> getCartesSelectionees() {
+        return cartesSelectionees;
     }
+
 
     /**
      * Deplace la piece selectionnee sur la coordonnee (x,y)
@@ -170,7 +192,7 @@ public class Jeu {
         joueurVert = new Joueur("VERT");
         getPremierJoueur();
         plateau = new Plateau(this);
-        pieceSelectionee = null;
+        cartesSelectionees = null;
         plateau.miseEnPlacePlateau(nbJoueur);
         fenetre.repaint();
     }
@@ -235,7 +257,6 @@ public class Jeu {
 
     /**
      * Setter pour joueurCourant
-     *
      * @param j joueurCourant
      */
     public void setJoueurCourant(Joueur j) {
@@ -244,7 +265,6 @@ public class Jeu {
 
     /**
      * Getter pour la fenetre lie au jeu
-     *
      * @return fenetre
      */
     public Fenetre getFenetre() {
@@ -253,7 +273,6 @@ public class Jeu {
 
     /**
      * Getter du plateau
-     *
      * @return Plateau
      */
     public Plateau getPlateau() {
@@ -261,12 +280,28 @@ public class Jeu {
     }
 
     /**
-     * Getter nbJoueur
-     *
+     * Getter : Nombre de joueur
      * @return nbJoueur
      */
     public int getNbJoueur() {
         return this.nbJoueur;
+    }
+
+    /**
+     * Getter : Action
+     * @return
+     */
+    public Action getAction() {
+        return action;
+    }
+
+    /**
+     * Setter : Action
+     *
+     * @param action
+     */
+    public void setAction(Action action) {
+        this.action = action;
     }
 
 }

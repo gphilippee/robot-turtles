@@ -1,5 +1,8 @@
-package affichage;
+package affichage.jeu;
 
+import affichage.Case;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -40,7 +43,7 @@ public class CaseJeu extends Case implements MouseListener {
      * @return le resultat du test
      */
     public boolean isSelectionee() {
-        return etat.equals(Etat.SELECTIONE) || etat.equals(Etat.DEPLACEMENT_POSSIBLE);
+        return etat.equals(Etat.SELECTIONE);
     }
 
     /**
@@ -67,6 +70,27 @@ public class CaseJeu extends Case implements MouseListener {
             g2d.setComposite(AlphaComposite.getInstance(
                     AlphaComposite.SRC_OVER, 1.0f));
         }
+
+        //Entourer la tortue du joueur actif
+        if (famille.equals("TORTUE") && couleur.equals(fenetre.getJeu().getJoueurCourant().getCouleur())) {
+            Color color = Color.BLACK;
+            switch (couleur) {
+                case "ROUGE":
+                    color = Color.RED;
+                    break;
+                case "BLEU":
+                    color = Color.BLUE;
+                    break;
+                case "VERT":
+                    color = Color.GREEN;
+                    break;
+                case "ROSE":
+                    color = Color.PINK;
+                    break;
+            }
+            this.setBorder(BorderFactory.createLineBorder(color, 3));
+
+        }
     }
 
     @Override
@@ -75,11 +99,9 @@ public class CaseJeu extends Case implements MouseListener {
             if (this.couleur.equals(fenetre.getJeu().getJoueurCourant().getCouleur())) {
                 fenetre.getGrille().resetSelectedCases();
                 this.etat = Etat.SELECTIONE;
-                fenetre.getJeu().setPieceSelectionee(x, y);
+                fenetre.repaint();
+                //fenetre.getJeu().setPieceSelectionee(x, y);
             } else {
-                if (!fenetre.getJeu().aucunePieceSelectionee()) {
-                    fenetre.getJeu().deplacerPiece(x, y);
-                }
             }
         }
     }
