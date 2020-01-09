@@ -66,7 +66,11 @@ public class choixAction extends JPanel implements ActionListener {
             if (fenetre.getJeu().getAction() != Jeu.Action.COMPLETE) {
                 fenetre.addLogPartie("Vous avez choisi de completer le programme.");
                 fenetre.getJeu().setAction(Jeu.Action.COMPLETE);
+                //reset des autres actions
+                reset();
+                fenetre.repaint();
             }
+
 
         }
 
@@ -74,7 +78,10 @@ public class choixAction extends JPanel implements ActionListener {
             if (fenetre.getJeu().getAction() != Jeu.Action.CONSTRUIRE) {
                 fenetre.addLogPartie("Vous avez choisi de construire un mur.");
                 fenetre.getJeu().setAction(Jeu.Action.CONSTRUIRE);
+                reset();
+                fenetre.repaint();
             }
+
 
         }
 
@@ -82,8 +89,19 @@ public class choixAction extends JPanel implements ActionListener {
             if (fenetre.getJeu().getAction() != Jeu.Action.EXECUTE) {
                 fenetre.addLogPartie("Vous avez choisi d'executer le programme.");
                 fenetre.getJeu().setAction(Jeu.Action.EXECUTE);
+                reset();
+                fenetre.repaint();
             }
 
         }
+    }
+
+    /**
+     * Reset les selections
+     */
+    public void reset() {
+        fenetre.getGrille().resetEtatCases();
+        fenetre.getMain().resetEtatCartes();
+        fenetre.getJeu().clearCartesSelectionees();
     }
 }

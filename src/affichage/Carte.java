@@ -81,7 +81,7 @@ public class Carte extends JPanel {
                     AlphaComposite.SRC_OVER, 0.3f));
             Color select = null;
             if (etat.equals(Carte.Etat.SELECTIONE)) {
-                select = new Color(249, 255, 171);
+                select = new Color(0, 255, 0);
             }
             g2d.setColor(select);
             g2d.fillRect(0, 0, 85, 120);

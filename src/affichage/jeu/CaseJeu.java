@@ -1,6 +1,7 @@
 package affichage.jeu;
 
 import affichage.Case;
+import jeu.Jeu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -95,14 +96,24 @@ public class CaseJeu extends Case implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent arg0) {
+        //Si la case accepte l'input
         if (recoisInput) {
-            if (this.couleur.equals(fenetre.getJeu().getJoueurCourant().getCouleur())) {
-                fenetre.getGrille().resetSelectedCases();
-                this.etat = Etat.SELECTIONE;
-                fenetre.repaint();
-                //fenetre.getJeu().setPieceSelectionee(x, y);
+            //Si l'action choisi est "CONSTRUIRE"
+            if (fenetre.getJeu().getAction().equals(Jeu.Action.CONSTRUIRE)) {
+                //Si la case est vide
+                if (fenetre.getJeu().getPlateau().estVide(x, y)) {
+                    fenetre.getGrille().resetSelectedCases();
+                    this.etat = Etat.SELECTIONE;
+                    fenetre.repaint();
+                    fenetre.getJeu().setCaseSelectionee(x, y);
+                } else {
+                    fenetre.addLogPartie("Cette case est déjà occupée.");
+                }
             } else {
+                fenetre.addLogPartie("Si vous souhaitez placer un mur, il faut choisir \"Construire un mur\".");
             }
+        } else {
+            fenetre.addLogPartie("Cette case ne peut pas etre sélectionée.");
         }
     }
 

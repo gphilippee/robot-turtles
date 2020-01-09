@@ -1,5 +1,6 @@
 package jeu;
 
+import affichage.jeu.CaseJeu;
 import affichage.jeu.Fenetre;
 import jeu.tuile.Tuile;
 
@@ -59,6 +60,11 @@ public class Jeu {
     protected Tuile carteSelectionee;
 
     /**
+     *
+     */
+    protected CaseJeu caseSelectionee;
+
+    /**
      * Instance de la fenetre de jeu
      */
     protected Fenetre fenetre;
@@ -85,6 +91,7 @@ public class Jeu {
         joueurRose = null;
         joueurCourant = null;
         cartesSelectionees = null;
+        caseSelectionee = null;
         fenetre = null;
         action = null;
     }
@@ -137,6 +144,26 @@ public class Jeu {
      */
     public void getPremierJoueur() {
         this.joueurCourant = ordreJoueur.get(0);
+    }
+
+    /**
+     * Designe comme piece selectionnee
+     *
+     * @param x coordonnee en abscisse de la futur piece selectionnee
+     * @param y coordonnee en ordonnee de la futur piece selectionnee
+     */
+    public void setCaseSelectionee(int x, int y) {
+        if (fenetre != null) {
+            fenetre.repaint();
+        }
+    }
+
+    public CaseJeu getCaseSelectionee() {
+        return caseSelectionee;
+    }
+
+    public void clearCartesSelectionees() {
+        cartesSelectionees = new ArrayList<>();
     }
 
     /**

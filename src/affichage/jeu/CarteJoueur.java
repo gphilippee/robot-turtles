@@ -24,6 +24,11 @@ public class CarteJoueur extends Carte implements MouseListener {
     private boolean recoisInput;
 
     /**
+     *
+     */
+    protected JLabel numeroCarte;
+
+    /**
      * Constructeur
      *
      * @param indiceCarte
@@ -34,6 +39,7 @@ public class CarteJoueur extends Carte implements MouseListener {
         this.fenetre = fenetre;
         this.addMouseListener(this);
         this.recoisInput = true;
+        this.setLayout(new BorderLayout());
     }
 
     /**
@@ -73,15 +79,29 @@ public class CarteJoueur extends Carte implements MouseListener {
                 if (this.etat == Etat.RIEN) {
                     this.etat = Etat.SELECTIONE;
                     this.setBorder(BorderFactory.createRaisedBevelBorder());
+
                     fenetre.addLogPartie("La carte a bien été ajouté au programme");
                     fenetre.getJeu().addCarteSelectionnee(indiceCarte);
+
+                    //Ajout d'un numero sur la carte pour connaitre l'ordre
+                    numeroCarte = new JLabel("" + fenetre.getJeu().getCartesSelectionees().size());
+                    Font police = new Font("Arial", Font.BOLD, 24);
+                    numeroCarte.setFont(police);
+                    numeroCarte.setForeground(Color.WHITE);
+                    numeroCarte.setHorizontalAlignment(JLabel.CENTER);
+                    this.add(numeroCarte, BorderLayout.CENTER);
+
                     System.out.println(fenetre.getJeu().getCartesSelectionees());
                     //this.setVisible(false);
                 } else {
                     this.setBorder(BorderFactory.createEmptyBorder());
                     this.etat = Etat.RIEN;
                     fenetre.addLogPartie("La carte a bien été enlevé au programme");
+                    this.remove(numeroCarte);
                     fenetre.getJeu().removeCarteSelectionnee(indiceCarte);
+
+                    //Enleve le numero sur la carte
+
                     System.out.println(fenetre.getJeu().getCartesSelectionees());
                 }
 
@@ -97,7 +117,11 @@ public class CarteJoueur extends Carte implements MouseListener {
                     this.etat = Etat.RIEN;
                 }
                 fenetre.repaint();
+            } else {
+                fenetre.addLogPartie("Si vous souhaitez completer le programme, veuillez choisir, il faut choisir \"Completer le programme\".");
             }
+        } else {
+            fenetre.addLogPartie("Les cartes ne peuvent pas être sélectionnées");
         }
     }
 

@@ -90,23 +90,6 @@ public class Case extends JPanel {
         g.setColor(backgroundColor);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-        if (!etat.equals(Etat.RIEN)) {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(
-                    RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setComposite(AlphaComposite.getInstance(
-                    AlphaComposite.SRC_OVER, 0.5f));
-            Color select = null;
-            if (etat.equals(Etat.SELECTIONE)) {
-                select = new Color(0, 102, 51);
-            }
-            g2d.setColor(select);
-            g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-            g2d.setComposite(AlphaComposite.getInstance(
-                    AlphaComposite.SRC_OVER, 1.0f));
-        }
-
         if (contientPiece) {
             //Dessine l'image de la piece
             String couleurFile = couleur.toLowerCase();
@@ -128,6 +111,23 @@ public class Case extends JPanel {
             } catch (IOException e) {
                 System.out.println("Impossible de charger l'image " + getClass().getResource("src/images/" + famille.toLowerCase() + "_" + couleurFile + ".png"));
             }
+        }
+
+        if (!etat.equals(Etat.RIEN)) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(
+                    RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setComposite(AlphaComposite.getInstance(
+                    AlphaComposite.SRC_OVER, 0.5f));
+            Color select = null;
+            if (etat.equals(Etat.SELECTIONE)) {
+                select = new Color(0, 102, 51);
+            }
+            g2d.setColor(select);
+            g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+            g2d.setComposite(AlphaComposite.getInstance(
+                    AlphaComposite.SRC_OVER, 1.0f));
         }
 
     }

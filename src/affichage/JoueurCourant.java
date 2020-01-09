@@ -63,9 +63,7 @@ public class JoueurCourant extends JPanel {
         joueurRose.setPreferredSize(new Dimension(Case.CASE_LENGTH, Case.CASE_LENGTH));
 
         JLabel textTour = new JLabel("TOUR", JLabel.CENTER);
-        textTour.setPreferredSize(new Dimension(Case.CASE_LENGTH * 4, Case.CASE_LENGTH));
-
-
+        textTour.setPreferredSize(new Dimension(Case.CASE_LENGTH * 2, Case.CASE_LENGTH));
 
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -86,6 +84,7 @@ public class JoueurCourant extends JPanel {
 
         //placement texte Tour
         gbc.gridx = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         this.add(textTour, gbc);
 
         //placement joueur rouge

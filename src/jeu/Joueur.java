@@ -95,7 +95,7 @@ public class Joueur {
      */
     private void mainInitiale() {
         ArrayList<Tuile> mainInitiale = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             mainInitiale.add(pileCarte.get(0));
             pileCarte.remove(0);
         }

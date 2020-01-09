@@ -43,23 +43,11 @@ public class Menu extends JFrame implements ActionListener, MouseListener {
         jouer.addMouseListener(this);
 
         background = new Background();
-        background.setLayout(new GridBagLayout());
+        background.setLayout(new BorderLayout());
         this.setContentPane(background);
 
-        //Positionnement
-        GridBagConstraints gbc = new GridBagConstraints();
-
         //Positionnement jouer
-        gbc.weightx = 1;
-        gbc.weighty = 1;
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        background.add(jouer, gbc);
-
+        background.add(jouer, BorderLayout.SOUTH);
     }
 
     @Override
