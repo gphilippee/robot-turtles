@@ -57,18 +57,6 @@ public class CarteJoueur extends Carte implements MouseListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (!recoisInput) {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(
-                    RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setComposite(AlphaComposite.getInstance(
-                    AlphaComposite.SRC_OVER, 0.5f));
-            g2d.setColor(Color.WHITE);
-            g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-            g2d.setComposite(AlphaComposite.getInstance(
-                    AlphaComposite.SRC_OVER, 1.0f));
-        }
     }
 
     @Override
@@ -79,17 +67,19 @@ public class CarteJoueur extends Carte implements MouseListener {
                 if (this.etat == Etat.RIEN) {
                     this.etat = Etat.SELECTIONE;
                     this.setBorder(BorderFactory.createRaisedBevelBorder());
-
                     fenetre.addLogPartie("La carte a bien été ajouté au programme");
                     fenetre.getJeu().addCarteSelectionnee(indiceCarte);
 
-                    //Ajout d'un numero sur la carte pour connaitre l'ordre
-                    numeroCarte = new JLabel("" + fenetre.getJeu().getCartesSelectionees().size());
-                    Font police = new Font("Arial", Font.BOLD, 24);
-                    numeroCarte.setFont(police);
-                    numeroCarte.setForeground(Color.WHITE);
-                    numeroCarte.setHorizontalAlignment(JLabel.CENTER);
-                    this.add(numeroCarte, BorderLayout.CENTER);
+                    //TODO probleme : les numeros mis sur les cartes reste lorsque le joueur change
+                    /**
+                     //Ajout d'un numero sur la carte pour connaitre l'ordre
+                     numeroCarte = new JLabel("" + fenetre.getJeu().getCartesSelectionees().size());
+                     Font police = new Font("Arial", Font.BOLD, 35);
+                     numeroCarte.setFont(police);
+                     numeroCarte.setForeground(Color.WHITE);
+                     numeroCarte.setHorizontalAlignment(JLabel.CENTER);
+                     this.add(numeroCarte, BorderLayout.CENTER);
+                     */
 
                     System.out.println(fenetre.getJeu().getCartesSelectionees());
                     //this.setVisible(false);
@@ -97,11 +87,12 @@ public class CarteJoueur extends Carte implements MouseListener {
                     this.setBorder(BorderFactory.createEmptyBorder());
                     this.etat = Etat.RIEN;
                     fenetre.addLogPartie("La carte a bien été enlevé au programme");
-                    this.remove(numeroCarte);
+
+                    //this.remove(numeroCarte);
+
                     fenetre.getJeu().removeCarteSelectionnee(indiceCarte);
 
                     //Enleve le numero sur la carte
-
                     System.out.println(fenetre.getJeu().getCartesSelectionees());
                 }
 

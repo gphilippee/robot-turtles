@@ -32,6 +32,7 @@ public class Plateau {
         this.jeu = jeu;
     }
 
+
     /**
      * Constructeur
      */
@@ -65,7 +66,7 @@ public class Plateau {
             case 3:
                 jeu.getJoueurBleu().setTortue(new Tortue(0, 7, "BLEU", 'S', this));
                 jeu.getJoueurRouge().setTortue(new Tortue(3, 7, "ROUGE", 'S', this));
-                jeu.getJoueurVert().setTortue(new Tortue(7, 7, "VERT", 'S', this));
+                jeu.getJoueurVert().setTortue(new Tortue(6, 7, "VERT", 'S', this));
                 setCase(0, 7, jeu.getJoueurBleu().getTortue());
                 setCase(3, 7, jeu.getJoueurRouge().getTortue());
                 setCase(6, 7, jeu.getJoueurVert().getTortue());
@@ -180,25 +181,19 @@ public class Plateau {
             System.out.print((i + 1) + " | ");
             for (int j = 0; j < plateau[i].length; j++) {
                 if (plateau[j][i] != null) {
-                    if (plateau[j][i].getCouleur().equals("NOIR")) {
-                        if (plateau[j][i].getFamille().equals("REINE")) {
-                            System.out.print("d ");
-                        } else {
-                            System.out.print(plateau[j][i].getFamille().toLowerCase().charAt(0) + " ");
-                        }
-                    } else {
-                        if (plateau[j][i].getFamille().equals("REINE")) {
-                            System.out.print("D ");
-                        } else {
-                            System.out.print(plateau[j][i].getFamille().charAt(0) + " ");
-                        }
-                    }
+                    System.out.print(plateau[j][i].getFamille().charAt(0) + " ");
                 } else {
                     System.out.print(". ");
                 }
             }
             System.out.println();
         }
-        //System.out.println("Tour du joueur : "+jeu.getJoueurCourant().getCouleur());
+        System.out.println("Tour du joueur : " + jeu.getJoueurCourant().getCouleur());
     }
+
+    public int getTaille() {
+        return plateau.length;
+    }
+
+
 }

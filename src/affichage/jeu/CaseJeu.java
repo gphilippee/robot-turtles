@@ -3,7 +3,6 @@ package affichage.jeu;
 import affichage.Case;
 import jeu.Jeu;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -72,26 +71,28 @@ public class CaseJeu extends Case implements MouseListener {
                     AlphaComposite.SRC_OVER, 1.0f));
         }
 
+        //TODO enlever la bordure lorsque le joueur a fini son tour
         //Entourer la tortue du joueur actif
-        if (famille.equals("TORTUE") && couleur.equals(fenetre.getJeu().getJoueurCourant().getCouleur())) {
-            Color color = Color.BLACK;
-            switch (couleur) {
-                case "ROUGE":
-                    color = Color.RED;
-                    break;
-                case "BLEU":
-                    color = Color.BLUE;
-                    break;
-                case "VERT":
-                    color = Color.GREEN;
-                    break;
-                case "ROSE":
-                    color = Color.PINK;
-                    break;
-            }
-            this.setBorder(BorderFactory.createLineBorder(color, 3));
-
-        }
+        /**
+         if (famille.equals("TORTUE") && couleur.equals(fenetre.getJeu().getJoueurCourant().getCouleur())) {
+         Color color = Color.BLACK;
+         switch (couleur) {
+         case "ROUGE":
+         color = Color.RED;
+         break;
+         case "BLEU":
+         color = Color.BLUE;
+         break;
+         case "VERT":
+         color = Color.GREEN;
+         break;
+         case "ROSE":
+         color = Color.PINK;
+         break;
+         }
+         this.setBorder(BorderFactory.createLineBorder(color, 3));
+         }
+         */
     }
 
     @Override

@@ -42,7 +42,7 @@ public class Menu extends JFrame implements ActionListener, MouseListener {
         jouer.addActionListener(this);
         jouer.addMouseListener(this);
 
-        background = new Background();
+        background = new Background("background.jpeg");
         background.setLayout(new BorderLayout());
         this.setContentPane(background);
 

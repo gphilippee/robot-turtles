@@ -50,6 +50,11 @@ public class Fenetre extends JFrame implements ActionListener {
     protected JButton valider;
 
     /**
+     * Affichage du programme
+     */
+    protected ProgrammeJeu programmeJeu;
+
+    /**
      * Affichage de la main
      */
     private MainJoueur mainJoueur;
@@ -115,6 +120,18 @@ public class Fenetre extends JFrame implements ActionListener {
         //Bouton valider
         valider = new JButton("Valider");
         valider.setPreferredSize(new Dimension(Case.CASE_LENGTH * 3, Case.CASE_LENGTH * 1));
+        valider.addActionListener(this);
+
+        //Affichage du programme
+        programmeJeu = new ProgrammeJeu(jeu);
+        programmeJeu.setPreferredSize(new Dimension(Case.CASE_LENGTH * 8, Case.CASE_LENGTH * 2));
+        JPanel programmeConteneur = new JPanel();
+        programmeConteneur.add(programmeJeu);
+        programmeConteneur.setBorder(BorderFactory.createTitledBorder("Programme : "));
+        programmeConteneur.setPreferredSize(new Dimension(Case.CASE_LENGTH * 8, Case.CASE_LENGTH * 3));
+
+        //Affichage
+        //TODO afficher le nombre de carte dans le deck et dans le programme
 
         //Logs de la partie
         logsPartie = new JTextArea();
@@ -122,12 +139,13 @@ public class Fenetre extends JFrame implements ActionListener {
         logsPartie.setLineWrap(true);
         logsPartie.setMargin(new Insets(5, 5, 5, 5));
         JScrollPane scrollZone = new JScrollPane(logsPartie);
-        scrollZone.setPreferredSize(new Dimension(Case.CASE_LENGTH * 8, Case.CASE_LENGTH * 8));
+        scrollZone.setPreferredSize(new Dimension(Case.CASE_LENGTH * 8, Case.CASE_LENGTH * 5));
         scrollZone.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
         //Ajout du texte
         this.addLogPartie("Bienvenue sur Robot Turtles");
         this.addLogPartie("Vous avez choisi le mode " + nbJoueur + " joueurs.");
+        this.addLogPartie("Joueur " + jeu.getJoueurCourant().getCouleur().toLowerCase() + " à toi de jouer !");
 
 
         //Coords
@@ -170,14 +188,15 @@ public class Fenetre extends JFrame implements ActionListener {
         //Placement des ordonnees
         gbc.gridx = 1;
         gbc.gridy = 1;
-        gbc.gridheight = 1;
+        gbc.gridheight = 2;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 10, 0, 0);
         conteneurGeneral.add(coordOrdonnee, gbc);
 
         //Placement de la grille
         gbc.gridx = 2;
-        gbc.gridheight = 1;
+        gbc.gridy = 1;
+        gbc.gridheight = 2;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 10, 0, 10);
         conteneurGeneral.add(grille, gbc);
@@ -189,29 +208,37 @@ public class Fenetre extends JFrame implements ActionListener {
         gbc.insets = new Insets(0, 10, 0, 0);
         conteneurGeneral.add(scrollZone, gbc);
 
+        //Placement du programme
+        gbc.gridx = 3;
+        gbc.gridy = 2;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 0, 10);
+        conteneurGeneral.add(programmeConteneur, gbc);
+
         //Placement des abscisses
         gbc.gridx = 2;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(10, 10, 0, 10);
         conteneurGeneral.add(coordAbscisse, gbc);
 
         //Placement la main du joueur
         gbc.gridx = 2;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(20, 0, 0, 0);
         conteneurGeneral.add(mainJoueur, gbc);
 
         //Placement du bouton valider l'action
         gbc.gridx = 3;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.insets = new Insets(0, 20, 0, 0);
         conteneurGeneral.add(valider, gbc);
 
         //Placement du choix de l'action
         gbc.gridx = 4;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.insets = new Insets(0, 10, 0, 20);
         conteneurGeneral.add(choixAction, gbc);
 
@@ -228,6 +255,7 @@ public class Fenetre extends JFrame implements ActionListener {
     public void repaint() {
         this.grille.updateGrille();
         this.joueurCourant.update();
+        this.mainJoueur.updateMain();
         super.repaint();
     }
 
@@ -260,7 +288,6 @@ public class Fenetre extends JFrame implements ActionListener {
 
     /**
      * Getter : Main du joueur
-     *
      * @return
      */
     public MainJoueur getMain() {
@@ -269,29 +296,26 @@ public class Fenetre extends JFrame implements ActionListener {
 
     /**
      * Getter nbJoueur
-     *
      * @return nbJoueur
      */
     public int getNbJoueur() {
         return this.nbJoueur;
     }
 
+    /**
+     * Getter : Choix de l'action
+     *
+     * @return
+     */
+    public choixAction getChoixAction() {
+        return choixAction;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == valider) {
-            Jeu.Action action = getJeu().getAction();
-            if (action.equals(Jeu.Action.AUCUNE)) {
-                addLogPartie("Veuillez choisir une action");
-            } else if (action.equals(Jeu.Action.CONSTRUIRE)) {
-
-            } else if (action.equals(Jeu.Action.COMPLETE)) {
-
-            } else if (action.equals(Jeu.Action.EXECUTE)) {
-
-            } else if (action.equals(Jeu.Action.DEFAUSSE)) {
-
-            }
+            jeu.lagrosseFonction();
         }
     }
 }

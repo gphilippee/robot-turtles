@@ -77,8 +77,7 @@ public class Carte extends JPanel {
             g2d.setRenderingHint(
                     RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setComposite(AlphaComposite.getInstance(
-                    AlphaComposite.SRC_OVER, 0.3f));
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
             Color select = null;
             if (etat.equals(Carte.Etat.SELECTIONE)) {
                 select = new Color(0, 255, 0);

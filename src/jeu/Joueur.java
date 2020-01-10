@@ -47,6 +47,11 @@ public class Joueur {
      */
     protected Tortue tortue;
 
+    /**
+     *
+     */
+    protected ArrayList<Tuile> defausse;
+
 
     /**
      * Instancie un joueur selon la couleur c
@@ -60,6 +65,7 @@ public class Joueur {
         this.programme = new ArrayList<>();
         this.nbrPierre = 3;
         this.nbrGlace = 2;
+        this.defausse = new ArrayList<>();
     }
 
     /**
@@ -95,7 +101,7 @@ public class Joueur {
      */
     private void mainInitiale() {
         ArrayList<Tuile> mainInitiale = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             mainInitiale.add(pileCarte.get(0));
             pileCarte.remove(0);
         }
@@ -116,12 +122,12 @@ public class Joueur {
     }
 
     /**
-     * Permet d'ajouter au programme
-     *
-     * @param carte
+     * Permet d'ajouter au programme les cartes selectionees
+     * @param tuile
      */
-    public void ajoutProgramme(Tuile carte) {
-        programme.add(carte);
+    public void ajoutProgramme(Tuile tuile) {
+        programme.add(tuile);
+        System.out.println("Programme du joueur : " + programme);
     }
 
     /**
@@ -219,6 +225,23 @@ public class Joueur {
      */
     public int nombreGlace() {
         return nbrGlace;
+    }
+
+    /**
+     * Getter : Defausse
+     *
+     * @return
+     */
+    public ArrayList<Tuile> getDefausse() {
+        return defausse;
+    }
+
+    /**
+     * Enleve la carte de la main
+     */
+    public void ajoutDefausse(Tuile t) {
+        mainCarte.remove(t);
+        defausse.add(t);
     }
 }
 

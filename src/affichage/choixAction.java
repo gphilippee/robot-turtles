@@ -33,9 +33,19 @@ public class choixAction extends JPanel implements ActionListener {
      */
     protected Fenetre fenetre;
 
+    /**
+     *
+     */
+    protected boolean recoisInput;
+
+    /**
+     * @param fenetre
+     */
     public choixAction(Fenetre fenetre) {
         this.fenetre = fenetre;
         initConteneur();
+        this.recoisInput = true;
+
 
     }
 
@@ -62,38 +72,41 @@ public class choixAction extends JPanel implements ActionListener {
         Object source = e.getSource();
 
         if (source == completeProgramme) {
-            //Pour eviter le spam
-            if (fenetre.getJeu().getAction() != Jeu.Action.COMPLETE) {
-                fenetre.addLogPartie("Vous avez choisi de completer le programme.");
-                fenetre.getJeu().setAction(Jeu.Action.COMPLETE);
-                //reset des autres actions
-                reset();
-                fenetre.repaint();
+            if (recoisInput) {
+                //Pour eviter le spam
+                if (fenetre.getJeu().getAction() != Jeu.Action.COMPLETE) {
+                    fenetre.addLogPartie("Vous avez choisi de completer le programme.");
+                    fenetre.getJeu().setAction(Jeu.Action.COMPLETE);
+                    //reset des autres actions
+                    reset();
+                    fenetre.repaint();
+                }
             }
-
-
         }
 
         if (source == construireMur) {
-            if (fenetre.getJeu().getAction() != Jeu.Action.CONSTRUIRE) {
-                fenetre.addLogPartie("Vous avez choisi de construire un mur.");
-                fenetre.getJeu().setAction(Jeu.Action.CONSTRUIRE);
-                reset();
-                fenetre.repaint();
+            if (recoisInput) {
+                if (fenetre.getJeu().getAction() != Jeu.Action.CONSTRUIRE) {
+                    fenetre.addLogPartie("Vous avez choisi de construire un mur.");
+                    fenetre.getJeu().setAction(Jeu.Action.CONSTRUIRE);
+                    reset();
+                    fenetre.repaint();
+                }
             }
-
-
         }
 
         if (source == executeProgramme) {
-            if (fenetre.getJeu().getAction() != Jeu.Action.EXECUTE) {
-                fenetre.addLogPartie("Vous avez choisi d'executer le programme.");
-                fenetre.getJeu().setAction(Jeu.Action.EXECUTE);
-                reset();
-                fenetre.repaint();
+            if (recoisInput) {
+                if (fenetre.getJeu().getAction() != Jeu.Action.EXECUTE) {
+                    fenetre.addLogPartie("Vous avez choisi d'executer le programme.");
+                    fenetre.getJeu().setAction(Jeu.Action.EXECUTE);
+                    reset();
+                    fenetre.repaint();
+                }
             }
-
         }
+
+
     }
 
     /**
@@ -104,4 +117,13 @@ public class choixAction extends JPanel implements ActionListener {
         fenetre.getMain().resetEtatCartes();
         fenetre.getJeu().clearCartesSelectionees();
     }
+
+    /**
+     * Active ou desactive la reception d'input pour les boutons
+     */
+    public void setRecoisInput(boolean b) {
+        this.recoisInput = b;
+    }
+
+
 }

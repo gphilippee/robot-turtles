@@ -108,9 +108,9 @@ public class JoueurCourant extends JPanel {
      * Mise a jour du joueur courant
      */
     public void update() {
-        if (fenetre.getJeu() == null || fenetre.getJeu().getJoueurCourant().getCouleur().equals("ROUGE")) {
-            joueurBleu.isTour = false;
-            joueurRouge.isTour = true;
+        if (fenetre.getJeu().getJoueurCourant().getCouleur().equals("ROUGE")) {
+            joueurBleu.isTour = true;
+            joueurRouge.isTour = false;
             joueurVert.isTour = false;
             joueurRose.isTour = false;
         } else if (fenetre.getJeu().getJoueurCourant().getCouleur().equals("BLEU")) {

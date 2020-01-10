@@ -49,7 +49,13 @@ public class MainJoueur extends JComponent {
             if (contenu[i].getClass().equals(CarteJoueur.class)) {
                 //Mise a jour de la case selon sa m�me position dans la main
                 CarteJoueur c = (CarteJoueur) contenu[i];
-                c.updateCarte(fenetre.getJeu().getJoueurCourant().getMainCarte().get(c.getIndiceCarte()));
+                try {
+                    c.updateCarte(fenetre.getJeu().getJoueurCourant().getMainCarte().get(c.getIndiceCarte()));
+                    c.setRecoisInput(true);
+                } catch (Exception e) {
+                    c.updateCarte(null);
+                    c.setRecoisInput(false);
+                }
             }
         }
     }

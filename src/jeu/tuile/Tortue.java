@@ -16,7 +16,6 @@ public class Tortue extends Tuile {
      */
     public Tortue(int x, int y, String couleur, char direction, Plateau plateau) {
         super(x, y, "TORTUE", couleur, direction, plateau);
-
     }
 
     /**

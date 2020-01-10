@@ -87,6 +87,7 @@ public class Case extends JPanel {
      */
     public void paintComponent(Graphics g) {
         //fond
+
         g.setColor(backgroundColor);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 

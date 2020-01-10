@@ -1,8 +1,9 @@
 package jeu;
 
-import affichage.jeu.CaseJeu;
 import affichage.jeu.Fenetre;
+import jeu.tuile.Tortue;
 import jeu.tuile.Tuile;
+import jeu.tuile.murPierre;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +19,7 @@ public class Jeu {
     protected Plateau plateau;
 
     /**
-     *
+     * Définit l'action en cours
      */
     public enum Action {AUCUNE, COMPLETE, EXECUTE, CONSTRUIRE, DEFAUSSE}
 
@@ -62,7 +63,12 @@ public class Jeu {
     /**
      *
      */
-    protected CaseJeu caseSelectionee;
+    protected int[][] plateauCaseExplore;
+
+    /**
+     *
+     */
+    protected int[] caseSelectionee;
 
     /**
      * Instance de la fenetre de jeu
@@ -80,6 +86,11 @@ public class Jeu {
     protected ArrayList<Joueur> ordreJoueur;
 
     /**
+     * Variable pour savoir si le joueur a effectué une action correctement
+     */
+    protected boolean isActionCorrecte = false;
+
+    /**
      * Constructeur
      */
     public Jeu() {
@@ -94,6 +105,7 @@ public class Jeu {
         caseSelectionee = null;
         fenetre = null;
         action = null;
+        plateauCaseExplore = null;
     }
 
     /**
@@ -103,13 +115,14 @@ public class Jeu {
      */
     public Jeu(Fenetre fenetre) {
         super();
+        plateauCaseExplore = new int[8][8];
         this.nbJoueur = fenetre.getNbJoueur();
-        this.plateau = new Plateau(this);
         joueurBleu = new Joueur("BLEU");
         joueurRouge = new Joueur("ROUGE");
         joueurVert = new Joueur("VERT");
         joueurRose = new Joueur("ROSE");
-        this.ordreJoueur = generateOrdreJoueur(fenetre.getNbJoueur());
+        generateOrdreJoueur(fenetre.getNbJoueur());
+        this.plateau = new Plateau(this);
         action = Action.AUCUNE;
         /**
          * A changer
@@ -123,7 +136,14 @@ public class Jeu {
     /**
      *
      */
-    public ArrayList<Joueur> generateOrdreJoueur(int nbJoueur) {
+    public boolean existeChemin(Plateau plateau) {
+        return false;
+    }
+
+    /**
+     *
+     */
+    public void generateOrdreJoueur(int nbJoueur) {
         ArrayList<Joueur> listJoueur = new ArrayList<>();
 
         listJoueur.add(joueurBleu);
@@ -135,8 +155,7 @@ public class Jeu {
             listJoueur.add(joueurRose);
         }
         Collections.shuffle(listJoueur);
-        return listJoueur;
-
+        this.ordreJoueur = listJoueur;
     }
 
     /**
@@ -153,17 +172,33 @@ public class Jeu {
      * @param y coordonnee en ordonnee de la futur piece selectionnee
      */
     public void setCaseSelectionee(int x, int y) {
+        caseSelectionee = new int[]{x, y};
         if (fenetre != null) {
             fenetre.repaint();
         }
     }
 
-    public CaseJeu getCaseSelectionee() {
+    /**
+     * Getter : Case Selectionnee par le joueur
+     *
+     * @return
+     */
+    public int[] getCaseSelectionee() {
         return caseSelectionee;
     }
 
+    /**
+     * Permet le reset des cartes selectionees par le joueur
+     */
     public void clearCartesSelectionees() {
         cartesSelectionees = new ArrayList<>();
+    }
+
+    /**
+     * Permet le reset de la case selectionee par le joueur
+     */
+    public void clearCaseSelectionee() {
+        caseSelectionee = null;
     }
 
     /**
@@ -192,6 +227,7 @@ public class Jeu {
 
     /**
      * Getter : Cartes Selectionnees
+     *
      * @return
      */
     public ArrayList<Tuile> getCartesSelectionees() {
@@ -234,7 +270,8 @@ public class Jeu {
                 index = i;
             }
         }
-        joueurCourant = ordreJoueur.get((index + 1) % 4);
+        joueurCourant = ordreJoueur.get((index + 1) % nbJoueur);
+        fenetre.addLogPartie("Joueur " + joueurCourant.getCouleur().toLowerCase() + " à toi de jouer !");
     }
 
     /**
@@ -283,15 +320,8 @@ public class Jeu {
     }
 
     /**
-     * Setter pour joueurCourant
-     * @param j joueurCourant
-     */
-    public void setJoueurCourant(Joueur j) {
-        this.joueurCourant = j;
-    }
-
-    /**
      * Getter pour la fenetre lie au jeu
+     *
      * @return fenetre
      */
     public Fenetre getFenetre() {
@@ -300,6 +330,7 @@ public class Jeu {
 
     /**
      * Getter du plateau
+     *
      * @return Plateau
      */
     public Plateau getPlateau() {
@@ -308,6 +339,7 @@ public class Jeu {
 
     /**
      * Getter : Nombre de joueur
+     *
      * @return nbJoueur
      */
     public int getNbJoueur() {
@@ -316,6 +348,7 @@ public class Jeu {
 
     /**
      * Getter : Action
+     *
      * @return
      */
     public Action getAction() {
@@ -331,5 +364,189 @@ public class Jeu {
         this.action = action;
     }
 
+    //TODO implementer la defausse
+    public void lagrosseFonction() {
+        plateau.affiche();
+
+        /**
+         * Le joueur doit effectuer une des 3 actions correctement
+         */
+        //Recupere l'action selectionnee par le joueur
+        Action action = getAction();
+        if (!isActionCorrecte) {
+            if (action.equals(Action.AUCUNE)) {
+
+                fenetre.addLogPartie("Veuillez choisir une action.");
+
+            } else if (action.equals(Action.CONSTRUIRE)) {
+
+                //TODO do while tant que le mur nest pas bon good je pense
+                //J'ajoute le mur
+                plateau.setCase(caseSelectionee[0], caseSelectionee[1], new murPierre(caseSelectionee[0], caseSelectionee[1], "PIERRE", plateau));
+                plateau.affiche();
+                //Si le mur bloque, je l'enleve
+                if (isWallBlock()) {
+                    fenetre.addLogPartie("Le mur ne peut être posé car il bloque le jeu. Veuillez reesayer.");
+                    plateau.setCase(caseSelectionee[0], caseSelectionee[1], null);
+                } else {
+                    fenetre.addLogPartie("Le mur a bien été posé.");
+                    //L'action est correcte
+                    isActionCorrecte = true;
+                    setAction(Action.AUCUNE);
+                }
+
+            } else if (action.equals(Action.COMPLETE)) {
+
+                //Si le joueur n'a choisi aucune carte
+                if (getCartesSelectionees().size() == 0) {
+                    fenetre.addLogPartie("Vous n'avez choisi aucune carte. Veuillez recommencer.");
+                }
+                //Sinon, le joueur a au moins choisi une carte
+                else {
+                    fenetre.addLogPartie("Les cartes ont bien été ajoutées au programme.");
+                    /**
+                     * Ajoute les cartes selectionnes au programme et les supprime de la main
+                     */
+                    System.out.println("Main du joueur avant " + getJoueurCourant().getMainCarte());
+                    for (Tuile carte : cartesSelectionees) {
+                        getJoueurCourant().ajoutProgramme(carte);
+                        getJoueurCourant().ajoutDefausse(carte);
+                    }
+                    System.out.println("Main du joueur apres " + getJoueurCourant().getMainCarte());
+                    fenetre.getMain().resetEtatCartes();
+                    //TODO repaint la fenetre avec la main actualisé.
+                    fenetre.repaint();
+                    //reset des cartes selectionnes
+                    clearCartesSelectionees();
+                    //L'action est correcte
+                    isActionCorrecte = true;
+                    setAction(Action.AUCUNE);
+                }
+
+            } else if (action.equals(Jeu.Action.EXECUTE)) {
+                /**
+                 * Pour chaque carte dans le programme
+                 */
+                ArrayList<Tuile> programmeJoueur = joueurCourant.getProgramme();
+                //TODO implementer le comportement des cartes
+                for (Tuile carte : programmeJoueur) {
+                    //Carte : avancer
+                    if (carte.getCouleur().equals("BLEU")) {
+
+                    }
+                    //Carte : Anti-horaire
+                    else if (carte.getCouleur().equals("JAUNE")) {
+
+                    }
+                    //Carte : horaire
+                    else if (carte.getCouleur().equals("VIOLETTE")) {
+
+                    }
+                    //Carte : laser
+                    else if (carte.getCouleur().equals("LASER")) {
+
+                    }
+                }
+            }
+            setAction(Action.AUCUNE);
+            fenetre.addLogPartie("Selectionner les cartes que vous voulez defausser, sinon Valider.");
+        }
+
+
+        /**
+         * Ensuite, on fait la defausse si l'action precedente a ete correctement effectuee
+         */
+        fenetre.getChoixAction().setRecoisInput(false);
+        boolean isCarteDefausse = false;
+        if (isActionCorrecte) {
+
+            setAction(Action.DEFAUSSE);
+            /**
+             * Reset des selections precedentes
+             */
+            fenetre.getMain().resetEtatCartes();
+            fenetre.getJeu().clearCartesSelectionees();
+            fenetre.getGrille().resetEtatCases();
+            if (action.equals(Action.DEFAUSSE)) {
+                setAction(Action.AUCUNE);
+                isCarteDefausse = true;
+                isActionCorrecte = false;
+            }
+
+        }
+        /**
+         * Si les cartes ont été défaussées
+         */
+        if (isCarteDefausse) {
+            /**
+             * Change le joueur actuel
+             */
+            switchJoueur();
+
+            /**
+             * Redessine la fenetre pour un nouveau tour
+             */
+            fenetre.repaint();
+            /**
+             * Réautorise les inputs sur les choix de l'action
+             */
+            fenetre.getChoixAction().setRecoisInput(true);
+
+        }
+
+    }
+
+    /**
+     * On teste s'il existe au moins un joyau accessible pour chaque tortue
+     *
+     * @return vrai ou faux
+     */
+    public boolean isWallBlock() {
+        for (int i = 0; i < nbJoueur; i++) {
+            Tortue tortue = ordreJoueur.get(i).getTortue();
+            plateauCaseExplore = new int[8][8];
+            boolean cheminExiste = cheminTortueJoyau(tortue.getX(), tortue.getY());
+            if (!cheminExiste) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Trouve l'existence ou non d'un chemin entre la tortue et le joyaux
+     *
+     * @param i
+     * @param j
+     * @return
+     */
+    public boolean cheminTortueJoyau(int i, int j) {
+        //Si la case est en dehors
+        if (plateau.getTaille() <= i || i < 0 || plateau.getTaille() <= j || j < 0) {
+            return false;
+        }
+        //Si la case a ete deja été explorée
+        if (plateauCaseExplore[j][7 - i] == 1) {
+            return false;
+        }
+        //Sinon, je l'ajoute
+        else {
+            plateauCaseExplore[j][7 - i] = 1;
+        }
+        //Si la case n'est pas vide
+        if (plateau.getCase(i, j) != null) {
+            //S'il s'agit d'un mur de pierre, renvoie false
+            if (plateau.getCase(i, j).getFamille().equals("MUR")) {
+                if (plateau.getCase(i, j).getCouleur().equals("PIERRE")) {
+                    return false;
+                }
+                //S'il s'agit d'un joyau, il existe un chemin, renvoie true
+            } else if (plateau.getCase(i, j).getFamille().equals("JOYAU")) {
+                System.out.println(plateau.getCase(i, j).getFamille());
+                return true;
+            }
+        }
+        return cheminTortueJoyau(i + 1, j) || cheminTortueJoyau(i, j - 1) || cheminTortueJoyau(i, j + 1) || cheminTortueJoyau(i - 1, j);
+    }
 }
 

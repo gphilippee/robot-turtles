@@ -11,7 +11,7 @@ import java.awt.*;
  *
  * @see Case
  */
-public class GrilleJeu extends JComponent {
+public class GrilleJeu<Jpanel> extends JComponent {
 
     /**
      * Instance de la fenetre qui contient la grille
